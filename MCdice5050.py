@@ -1,7 +1,4 @@
 import random
-import matplotlib
-import matplotlib.pyplot as plt
-import time
 
 
 def rolldice():
@@ -26,9 +23,8 @@ def dalembert(funds, initial_wager, wager_count):
     Parameters
     ----------
     funds: Amount you have to bet
-    initial wager: Initial wager amount
+    initial_wager: Initial wager amount
     wager_count: How many times you want to bet
-
     """
 
     global ret
@@ -47,16 +43,16 @@ def dalembert(funds, initial_wager, wager_count):
             else:
                 wager -= initial_wager
 
-            #print('current wager:', wager, 'value:', value)
+            # print('current wager:', wager, 'value:', value)
 
             if rolldice():                      # If you win add to your funds
                 value += wager
-                #print('we won, current value:', value)
+                # print('we won, current value:', value)
                 previouswageramount = wager
             else:                               # If you lose subtract from funds
                 value -= wager
                 previouswager = 'loss'
-                #print('we lost. current value:', value)
+                # print('we lost. current value:', value)
                 previouswageramount = wager
 
                 if value <= 0:                 # If you lose all your money, you broke!
@@ -68,17 +64,17 @@ def dalembert(funds, initial_wager, wager_count):
             if (value - wager) <= 0:            # If you go negative by doing that just bet what you have left.
                 wager = value
 
-            #print('lost the last wager, current wager:', wager, 'value:', value)
+            # print('lost the last wager, current wager:', wager, 'value:', value)
 
             if rolldice():
                 value += wager
-                #print('we won, current value:', value)
+                # print('we won, current value:', value)
                 previouswageramount = wager
                 previouswager = 'win'
 
             else:
                 value -= wager
-                #print('we lost, curren value:', value)
+                # print('we lost, curren value:', value)
                 previouswageramount = wager
 
                 if value <= 0:
@@ -90,7 +86,7 @@ def dalembert(funds, initial_wager, wager_count):
     if value > funds:
         da_profits += 1
 
-    #print(value)
+    # print(value)
 
     ret += value
 
@@ -99,13 +95,13 @@ def dalembert(funds, initial_wager, wager_count):
 samplesize = 1000  # How many individual trials
 startingfunds = 10000
 
-
+# --------------------------------------------------------------------------------------
 # Want to figure out what the best wager size and count are for the D'Alembert strategy
+# --------------------------------------------------------------------------------------
+
 while True:
-    #wagersize = 100
-    #wagercount = 1000  # Length of individual trial
-    wagersize= random.uniform(1.0,1000.00)
-    wagercount = random.uniform(10.0,10000)
+    wagersize = random.uniform(1.0, 1000.00)
+    wagercount = random.uniform(10.0, 10000)
 
     ret = 0.0
     da_busts = 0.0
@@ -136,9 +132,8 @@ while True:
         print('wager count:', wagercount)
         print('wager size percent:', wagersizepercent)
 
-
-        save_file = open('MonteCarlo.csv','a')
-        save_line = '\n'+str(percentROI)+','+str(wagersizepercent)+ ',g'
+        save_file = open('MonteCarlo.csv', 'a')
+        save_line = '\n' + str(percentROI) + ',' + str(wagersizepercent) + ',' + str(wagercount) + ',g'
         save_file.write(save_line)
         save_file.close()
 
@@ -156,14 +151,15 @@ while True:
 
         # Save results so we can plot them later
         save_file = open('MonteCarlo.csv', 'a')
-        save_line = '\n' + str(percentROI) + ',' + str(wagersizepercent)+',r'
+        save_line = '\n' + str(percentROI) + ',' + str(wagersizepercent) + ',' + str(wagercount) + ',r'
         save_file.write(save_line)
         save_file.close()
 
 
-
-''' Initally shown in the 50/50 odds section as the code, but was never used in that video or the next one. Not Sure if/
-when it will actually be used. '''
+# ------------------------------------------------------------------------------------------------------------------
+# Initially shown in the 50/50 odds section as the code, but was never used in that video or the next one. Not Sure
+# if/when it will actually be used.
+# ------------------------------------------------------------------------------------------------------------------
 
 # def multiple_bettor2(funds, inital_wager, wager_count, multiple):  #, color):
 #     global ROI
@@ -234,4 +230,3 @@ when it will actually be used. '''
 # while counter2 <= multiplesamplesize:
 #     multiple_bettor2(startingfunds, wagersize, wagercount, 1.75)
 #     counter2 += 1
-
