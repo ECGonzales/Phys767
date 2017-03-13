@@ -3,12 +3,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 import time
 
-# Define variables that can be used with all functions
-samplesize = 1000  # How many individual trials
-startingfunds = 100000
-wagersize = 100
-wagercount = 1000  # Length of individual trial
-#Hola Hola yo.
 
 def rolldice():
     """ Generate a dice rolling, where you have 50/50 odds. Generates random number between 1 and 100.
@@ -101,21 +95,70 @@ def dalembert(funds, initial_wager, wager_count):
     ret += value
 
 
-ret = 0.0
-da_busts = 0.0
-da_profits = 0.0
-dasampsize = 1000
-counter = 1
+# Define variables that can be used with all functions
+samplesize = 1000  # How many individual trials
+startingfunds = 10000
 
-while counter <= dasampsize:
-    dalembert(startingfunds, wagersize, wagercount)
-    counter += 1
 
-print('Total Invested:', dasampsize * startingfunds)
-print('Total return:', ret)
-print('ROI:', ret - (dasampsize * startingfunds))
-print('Bust rate:', (da_busts/dasampsize) * 100.00)
-print('Profit rate:', (da_profits/dasampsize) * 100.00)
+# Want to figure out what the best wager size and count are for the D'Alembert strategy
+while True:
+    #wagersize = 100
+    #wagercount = 1000  # Length of individual trial
+    wagersize= random.uniform(1.0,1000.00)
+    wagercount = random.uniform(10.0,10000)
+
+    ret = 0.0
+    da_busts = 0.0
+    da_profits = 0.0
+    dasampsize = 10000
+    counter = 1
+
+    while counter <= dasampsize:
+        dalembert(startingfunds, wagersize, wagercount)
+        counter += 1
+
+    ROI = ret - (dasampsize * startingfunds)
+    totalinvested = dasampsize * startingfunds
+    percentROI = (ROI/totalinvested)*100.00
+
+    wagersizepercent = (wagersize/startingfunds)*100
+
+    # Saving results of percent ROI for plotting later.
+    if percentROI > 1:
+        print("------------------------------------------------")
+        print('Total Invested:', dasampsize * startingfunds)
+        print('Total return:', ret)
+        print('ROI:', ret - (dasampsize * startingfunds))
+        print('Precent ROI:', percentROI)
+        print('Bust rate:', (da_busts/dasampsize) * 100.00)
+        print('Profit rate:', (da_profits/dasampsize) * 100.00)
+        print('wager size:', wagersize)
+        print('wager count:', wagercount)
+        print('wager size percent:', wagersizepercent)
+
+
+        save_file = open('MonteCarlo.csv','a')
+        save_line = '\n'+str(percentROI)+','+str(wagersizepercent)+ ',g'
+        save_file.write(save_line)
+        save_file.close()
+
+    elif percentROI < -1:
+        print("------------------------------------------------")
+        print('Total Invested:', dasampsize * startingfunds)
+        print('Total return:', ret)
+        print('ROI:', ret - (dasampsize * startingfunds))
+        print('Precent ROI:', percentROI)
+        print('Bust rate:', (da_busts / dasampsize) * 100.00)
+        print('Profit rate:', (da_profits / dasampsize) * 100.00)
+        print('wager size:', wagersize)
+        print('wager count:', wagercount)
+        print('wager size percent:', wagersizepercent)
+
+        # Save results so we can plot them later
+        save_file = open('MonteCarlo.csv', 'a')
+        save_line = '\n' + str(percentROI) + ',' + str(wagersizepercent)+',r'
+        save_file.write(save_line)
+        save_file.close()
 
 
 
