@@ -3,8 +3,10 @@ import csv
 
 
 # Plotting the results of the monte carlo for determining which wager
+
 def graph():
     """ Plotting the results of a csv file for monte carlo example """
+
     with open('MonteCarlo.csv', 'r') as montecarlo:
         data = csv.reader(filter(lambda row: row[0] != '#', montecarlo), delimiter=',')
         for eachline in data:                       # filter(lambda row: row[0] != '#' lets the csv reader skip comments
@@ -17,4 +19,7 @@ def graph():
 
     plt.show()
 
-graph()
+# graph()
+
+# To make interactive (i.e add axes labels for this particular file) use: import plottingmonte as plotm
+# To plot from the python console plotm.graph()
